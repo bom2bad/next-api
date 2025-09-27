@@ -3,6 +3,7 @@
 import axios from "axios";
 import { Post, Comment } from "@/types";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 
 type Props = {
   params: { id: string };
@@ -16,7 +17,6 @@ export default async function PostDetailPage({ params }: Props) {
   }
 
   try {
-    // Fetch post and comments simultaneously
     const [postRes, commentsRes] = await Promise.all([
       axios.get<Post>(`https://jsonplaceholder.typicode.com/posts/${postId}`),
       axios.get<Comment[]>(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`)
@@ -26,32 +26,66 @@ export default async function PostDetailPage({ params }: Props) {
     const comments = commentsRes.data;
 
     return (
-      <div className="container mx-auto p-4">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
-          <p className="text-gray-700 leading-relaxed">{post.body}</p>
-        </div>
+      <div>
+        {/* Navigation */}
+        <nav className="nav">
+          <div className="container">
+            <Link href="/posts">
+              ← กลับไปหน้ารายการ Posts
+            </Link>
+          </div>
+        </nav>
 
-        <div className="border-t pt-6">
-          <h2 className="text-2xl font-semibold mb-4">
-            Comments ({comments.length})
-          </h2>
-          
-          {comments.length === 0 ? (
-            <p className="text-gray-500">ไม่มี comments</p>
-          ) : (
-            <div className="space-y-4">
-              {comments.map((comment) => (
-                <div key={comment.id} className="bg-gray-50 p-4 rounded-lg">
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-semibold text-lg">{comment.name}</h3>
-                    <span className="text-sm text-gray-500">{comment.email}</span>
-                  </div>
-                  <p className="text-gray-700">{comment.body}</p>
-                </div>
-              ))}
+        <div className="container">
+          {/* Post Content */}
+          <article className="card">
+            <div className="card-header">
+              <span className="badge">Post #{post.id}</span>
+              <span className="badge badge-secondary">โดย User {post.userId}</span>
             </div>
-          )}
+            
+            <h1 className="card-title" style={{ fontSize: '28px', marginBottom: '20px' }}>
+              {post.title}
+            </h1>
+            
+            <div className="card-body">
+              <p style={{ fontSize: '16px', lineHeight: '1.8' }}>
+                {post.body}
+              </p>
+            </div>
+          </article>
+
+          {/* Comments Section */}
+          <section className="comments-section">
+            <div className="comments-header">
+              <h2>💬 Comments ({comments.length})</h2>
+            </div>
+            
+            <div className="comments-body">
+              {comments.length === 0 ? (
+                <div className="no-comments">
+                  <p>ยังไม่มีความคิดเห็น</p>
+                  <p style={{ fontSize: '14px', marginTop: '10px' }}>
+                    เป็นคนแรกที่แสดงความคิดเห็น!
+                  </p>
+                </div>
+              ) : (
+                <div>
+                  {comments.map((comment) => (
+                    <div key={comment.id} className="comment">
+                      <div className="comment-header">
+                        <div className="comment-author">{comment.name}</div>
+                        <div className="comment-email">{comment.email}</div>
+                      </div>
+                      <div className="comment-body">
+                        {comment.body}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </section>
         </div>
       </div>
     );

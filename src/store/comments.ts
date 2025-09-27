@@ -29,15 +29,15 @@ export const useCommentsStore = create<CommentsState>((set, get) => ({
       const { data } = await axios.get<Post[]>(
         "https://jsonplaceholder.typicode.com/posts"
       );
-      set({ posts: data.slice(0, 10), loading: false });
+      set({ posts: data.slice(0, 8), loading: false });
     } catch (error) {
-      set({ error: "Failed to fetch posts", loading: false });
+      set({ error: "ไม่สามารถโหลดข้อมูลได้", loading: false });
     }
   },
 
   fetchComments: async (postId: number) => {
     const { comments } = get();
-    if (comments[postId]) return; // Already fetched
+    if (comments[postId]) return; // Already loaded
 
     try {
       const { data } = await axios.get<Comment[]>(
@@ -47,7 +47,7 @@ export const useCommentsStore = create<CommentsState>((set, get) => ({
         comments: { ...state.comments, [postId]: data }
       }));
     } catch (error) {
-      console.error(`Failed to fetch comments for post ${postId}:`, error);
+      console.error(`ไม่สามารถโหลด comments สำหรับ post ${postId}:`, error);
     }
   },
 
@@ -59,7 +59,7 @@ export const useCommentsStore = create<CommentsState>((set, get) => ({
       newExpanded.delete(postId);
     } else {
       newExpanded.add(postId);
-      fetchComments(postId); // Fetch comments when expanding
+      fetchComments(postId); // Load comments when expanding
     }
     
     set({ expandedPosts: newExpanded });

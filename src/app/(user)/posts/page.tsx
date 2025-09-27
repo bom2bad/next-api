@@ -9,21 +9,39 @@ export default async function PostsPage() {
   const posts = res.data;
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Posts</h1>
-      <div className="grid gap-4">
-        {posts.slice(0, 10).map((post) => (
-          <div key={post.id} className="border p-4 rounded-lg">
-            <h2 className="text-xl font-semibold mb-2">{post.title}</h2>
-            <p className="text-gray-600 mb-3">{post.body.substring(0, 100)}...</p>
-            <Link 
-              href={`/posts/${post.id}`}
-              className="text-blue-500 hover:underline"
-            >
-              ดู Comments ({post.id} comments)
-            </Link>
-          </div>
-        ))}
+    <div>
+      {/* Header */}
+      <header className="header">
+        <div className="container">
+          <h1>📝 My Blog Posts</h1>
+          <p>เรียนรู้การสร้างเว็บไซต์ด้วย Next.js</p>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <div className="container">
+        <div className="posts-grid">
+          {posts.slice(0, 12).map((post) => (
+            <article key={post.id} className="card">
+              <div className="card-header">
+                <span className="badge">Post #{post.id}</span>
+                <span className="badge badge-secondary">User {post.userId}</span>
+              </div>
+              
+              <h2 className="card-title">{post.title}</h2>
+              
+              <div className="card-body">
+                <p>{post.body.substring(0, 150)}...</p>
+              </div>
+
+              <div style={{ marginTop: '15px' }}>
+                <Link href={`/posts/${post.id}`} className="btn btn-primary">
+                  อ่านต่อและดู Comments
+                </Link>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
     </div>
   );
