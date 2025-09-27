@@ -1,5 +1,3 @@
-// src/app/(user)/posts/[id]/page.tsx
-
 import axios from "axios";
 import { Post, Comment } from "@/types";
 import { notFound } from "next/navigation";
@@ -9,7 +7,7 @@ type Props = {
   params: { id: string };
 };
 
-export default async function PostDetailPage({ params }: Props) {
+export default async function CommentsPage({ params }: Props) {
   const postId = parseInt(params.id);
   
   if (isNaN(postId)) {
@@ -30,39 +28,42 @@ export default async function PostDetailPage({ params }: Props) {
         {/* Navigation */}
         <nav className="nav">
           <div className="container">
-            <Link href="/posts">
-              <span>⬅️</span> กลับไปหน้ารายการ Posts
-            </Link>
+            <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+              <Link href="/posts">
+                <span>⬅️</span> กลับไปรายการ Posts
+              </Link>
+              
+            </div>
           </div>
         </nav>
 
         <div className="container">
-          {/* Post Content */}
-          <article className="card">
+          {/* Post Summary */}
+          <div className="card" style={{ marginBottom: '30px' }}>
             <div className="card-header">
               <span className="badge">
-                <span >📄</span> Post #{post.id}
+                <span>📄</span> Post #{post.id}
               </span>
               <span className="badge badge-success">
-                <span>✍️</span> โดย User {post.userId}
+                <span>💬</span> {comments.length} Comments
               </span>
             </div>
             
-            <h1 className="card-title" style={{ fontSize: '32px', marginBottom: '25px' }}>
+            <h1 className="card-title" style={{ fontSize: '28px', marginBottom: '15px' }}>
               {post.title}
             </h1>
             
             <div className="card-body">
-              <p style={{ fontSize: '18px', lineHeight: '1.8' }}>
-                {post.body}
+              <p style={{ fontSize: '16px', opacity: '0.8' }}>
+                {post.body.substring(0, 200)}...
               </p>
             </div>
-          </article>
+          </div>
 
-          {/* Comments Section - Show only first 3 comments */}
+          {/* Comments Section */}
           <section className="comments-section">
             <div className="comments-header">
-              <h2><span>💬</span> Latest Comments ({Math.min(comments.length, 3)}/{comments.length})</h2>
+              <h2><span>💬</span> All Comments ({comments.length})</h2>
             </div>
             
             <div className="comments-body">
@@ -75,7 +76,7 @@ export default async function PostDetailPage({ params }: Props) {
                 </div>
               ) : (
                 <div>
-                  {comments.slice(0, 3).map((comment, index) => (
+                  {comments.map((comment, index) => (
                     <div 
                       key={comment.id} 
                       className="comment"
@@ -92,14 +93,6 @@ export default async function PostDetailPage({ params }: Props) {
                       </div>
                     </div>
                   ))}
-                  
-                  {comments.length > 3 && (
-                    <div style={{ textAlign: 'center', marginTop: '30px' }}>
-                      <Link href={`/posts/${post.id}/comments`} className="btn btn-success">
-                        <span>👀</span> ดู Comments ทั้งหมด ({comments.length})
-                      </Link>
-                    </div>
-                  )}
                 </div>
               )}
             </div>

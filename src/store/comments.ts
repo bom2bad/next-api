@@ -37,7 +37,7 @@ export const useCommentsStore = create<CommentsState>((set, get) => ({
 
   fetchComments: async (postId: number) => {
     const { comments } = get();
-    if (comments[postId]) return; // Already loaded
+    if (comments[postId]) return;
 
     try {
       const { data } = await axios.get<Comment[]>(
@@ -59,7 +59,7 @@ export const useCommentsStore = create<CommentsState>((set, get) => ({
       newExpanded.delete(postId);
     } else {
       newExpanded.add(postId);
-      fetchComments(postId); // Load comments when expanding
+      fetchComments(postId);
     }
     
     set({ expandedPosts: newExpanded });

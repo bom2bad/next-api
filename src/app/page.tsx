@@ -12,7 +12,7 @@ export default async function PostsPage() {
       <header className="header">
         <div className="container">
           <h1>📝 Blog Posts</h1>
-          <p>Next-api </p>
+          
         </div>
       </header>
 
@@ -22,8 +22,8 @@ export default async function PostsPage() {
           {posts.slice(0, 12).map((post) => (
             <article key={post.id} className="card">
               <div className="card-header">
-                <span className="badge">Post #{post.id}</span>
-                <span className="badge badge-secondary">User {post.userId}</span>
+                <span className="badge">📄 Post #{post.id}</span>
+                <span className="badge badge-secondary">👤 User {post.userId}</span>
               </div>
               
               <h2 className="card-title">{post.title}</h2>
@@ -33,9 +33,10 @@ export default async function PostsPage() {
               </div>
 
               <div style={{ marginTop: '15px' }}>
-                <Link href={`/posts/${post.id}`} className="btn btn-primary">
+                <Link href={`/posts/${post.id}/comments`} className="btn btn-primary">
                   Comments
                 </Link>
+                
               </div>
             </article>
           ))}

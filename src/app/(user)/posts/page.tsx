@@ -13,8 +13,8 @@ export default async function PostsPage() {
       {/* Header */}
       <header className="header">
         <div className="container">
-          <h1>📝 My Blog Posts</h1>
-          <p>เรียนรู้การสร้างเว็บไซต์ด้วย Next.js</p>
+          <h1><span>📝</span> Blog Posts</h1>
+          
         </div>
       </header>
 
@@ -24,8 +24,12 @@ export default async function PostsPage() {
           {posts.slice(0, 12).map((post) => (
             <article key={post.id} className="card">
               <div className="card-header">
-                <span className="badge">Post #{post.id}</span>
-                <span className="badge badge-secondary">User {post.userId}</span>
+                <span className="badge">
+                  📄 Post #{post.id}
+                </span>
+                <span className="badge badge-secondary">
+                  👤 User {post.userId}
+                </span>
               </div>
               
               <h2 className="card-title">{post.title}</h2>
@@ -34,9 +38,9 @@ export default async function PostsPage() {
                 <p>{post.body.substring(0, 150)}...</p>
               </div>
 
-              <div style={{ marginTop: '15px' }}>
-                <Link href={`/posts/${post.id}`} className="btn btn-primary">
-                  อ่านต่อและดู Comments
+              <div style={{ marginTop: '20px' }}>
+                <Link href={`/posts/${post.id}/comments`} className="btn btn-primary">
+                  Comments
                 </Link>
               </div>
             </article>

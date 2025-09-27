@@ -31,21 +31,29 @@ export default function PostsClientPage() {
     <div>
       <header className="header">
         <div className="container">
-          <h1>📱 Interactive Posts</h1>
-          <p>กดเพื่อดู Comments แต่ละ Post</p>
+          <h1><span>📱</span> Interactive Posts</h1>
+          
         </div>
       </header>
 
       <div className="container">
-        {posts.map((post) => {
+        {posts.map((post, index) => {
           const postComments = comments[post.id] || [];
           const isExpanded = expandedPosts.has(post.id);
           
           return (
-            <div key={post.id} className="card">
+            <div 
+              key={post.id} 
+              className="card"
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
               <div className="card-header">
-                <span className="badge">Post #{post.id}</span>
-                <span className="badge badge-secondary">User {post.userId}</span>
+                <span className="badge">
+                  <span></span> Post #{post.id}
+                </span>
+                <span className="badge badge-secondary">
+                  <span>👤</span> User {post.userId}
+                </span>
               </div>
               
               <h2 className="card-title">{post.title}</h2>
@@ -54,12 +62,15 @@ export default function PostsClientPage() {
                 <p>{post.body}</p>
               </div>
               
-              <div style={{ marginTop: '15px' }}>
+              <div style={{ marginTop: '20px' }}>
                 <button
                   onClick={() => toggleComments(post.id)}
                   className="toggle-btn"
                 >
-                  {isExpanded ? '🔼 ซ่อน' : '🔽 แสดง'} Comments 
+                  {isExpanded ? 
+                    <><span>🔼</span> ซ่อน Comments</> : 
+                    <><span>🔽</span> แสดง Comments</>
+                  }
                   {isExpanded && ` (${postComments.length})`}
                 </button>
               </div>
@@ -67,15 +78,21 @@ export default function PostsClientPage() {
               {isExpanded && (
                 <div className="expandable-section">
                   {postComments.length === 0 ? (
-                    <p style={{ color: '#666', fontStyle: 'italic' }}>
-                      กำลังโหลด comments...
+                    <p style={{ color: '#7f8c8d', fontStyle: 'italic', textAlign: 'center' }}>
+                      <span>⏳</span> กำลังโหลด comments...
                     </p>
                   ) : (
                     <div>
-                      {postComments.map((comment) => (
-                        <div key={comment.id} className="client-comment">
+                      {postComments.map((comment, commentIndex) => (
+                        <div 
+                          key={comment.id} 
+                          className="client-comment"
+                          style={{ animationDelay: `${commentIndex * 0.1}s` }}
+                        >
                           <div className="client-comment-header">
-                            <span className="client-comment-name">{comment.name}</span>
+                            <span className="client-comment-name">
+                              <span>😊</span> {comment.name}
+                            </span>
                             <span className="client-comment-email">{comment.email}</span>
                           </div>
                           <div className="client-comment-body">
